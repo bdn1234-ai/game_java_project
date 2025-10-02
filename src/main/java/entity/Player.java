@@ -39,14 +39,16 @@ public class Player extends Entity{
 
     public void getPlayerImage(){
         try{
-            up1 = ImageIO.read(getClass().getResourceAsStream("/player/walking_sprites/boy_up_1.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/player/walking_sprites/boy_up_2.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/player/walking_sprites/boy_down_1.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/player/walking_sprites/boy_down_2.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/player/walking_sprites/boy_left_1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/player/walking_sprites/boy_left_2.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/player/walking_sprites/boy_right_1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/player/walking_sprites/boy_right_2.png"));
+            up1 = ImageIO.read(getClass().getResourceAsStream("/player/Huster_walking/up1.png"));
+            up2 = ImageIO.read(getClass().getResourceAsStream("/player/Huster_walking/up2.png"));
+            up3 = ImageIO.read(getClass().getResourceAsStream("/player/Huster_walking/up3.png"));
+            down1 = ImageIO.read(getClass().getResourceAsStream("/player/Huster_walking/down1.png"));
+            down2 = ImageIO.read(getClass().getResourceAsStream("/player/Huster_walking/down2.png"));
+            down3 = ImageIO.read(getClass().getResourceAsStream("/player/Huster_walking/down3.png"));
+            left1 = ImageIO.read(getClass().getResourceAsStream("/player/Huster_walking/left1.png"));
+            left2 = ImageIO.read(getClass().getResourceAsStream("/player/Huster_walking/left2.png"));
+            right1 = ImageIO.read(getClass().getResourceAsStream("/player/Huster_walking/right1.png"));
+            right2 = ImageIO.read(getClass().getResourceAsStream("/player/Huster_walking/right2.png"));
         }catch (IOException e){
             System.out.println("Không thể load sprite cho Player!");
             e.printStackTrace();
@@ -54,7 +56,15 @@ public class Player extends Entity{
     }
 
     public void update(){
+        if(!keyH.upPressed && !keyH.downPressed && !keyH.leftPressed && !keyH.rightPressed) {
+            spriteNum = 3;
+            spriteCounter = 0;
+        }
+        
         if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed){
+
+            if(spriteNum == 3) spriteNum = 1;
+
             if(keyH.upPressed){
                 direction = "up";
             } else if(keyH.downPressed){
@@ -89,7 +99,7 @@ public class Player extends Entity{
             spriteCounter++;
             if(spriteCounter > 12){ // đổi frame sau 12 lần update
                 if(spriteNum == 1) spriteNum = 2;
-                else spriteNum = 1;
+                else if (spriteNum == 2) spriteNum = 1;
                 spriteCounter = 0;
             }
         }
@@ -99,16 +109,32 @@ public class Player extends Entity{
         BufferedImage image = null;
         switch(direction){
             case "up":
-                image = (spriteNum == 1) ? up1 : up2;
+                switch(spriteNum) {
+                    case 1: image = up1; break;
+                    case 2: image = up2; break;
+                    case 3: image = up3; break;
+                }
                 break;
             case "down":
-                image = (spriteNum == 1) ? down1 : down2;
+                switch(spriteNum) {
+                    case 1: image = down1; break;
+                    case 2: image = down2; break;
+                    case 3: image = down3; break;
+                }
                 break;
             case "left":
-                image = (spriteNum == 1) ? left1 : left2;
+                switch(spriteNum) {
+                    case 1: image = left1; break;
+                    case 2: image = left2; break;
+                    case 3: image = left2; break;
+                }
                 break;
             case "right":
-                image = (spriteNum == 1) ? right1 : right2;
+                switch(spriteNum) {
+                    case 1: image = right1; break;
+                    case 2: image = right2; break;
+                    case 3: image = right2; break;
+                }
                 break;
         }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
